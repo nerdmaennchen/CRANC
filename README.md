@@ -33,8 +33,8 @@ if (packet) { // if that memory was aquired
 }
 ```
 
-To enable software timers you need to implement HWTimer in the fashion of your platform.
-That usually involved conversion from microseconds to ticks (whatever ticks mean in your context... e.g., hw-timer-ticks) and vice versa.
+To enable software timers you need to implement the class HWTimer in the fashion of your platform.
+That involves conversion from microseconds to ticks (whatever ticks mean in your context... e.g., hw-timer-ticks) and vice versa.
 Also the currently elapsed amount of ticks has to be provided (usually by providing the content of the timer count register).
 The framework calls `setupTimer(hw_timerTicks i_ticks)` to start the timer with a given amount of ticks and expects a call to `cranc::SWTimer::get().trigger();` within the ISR when the timer overflowed.
 
