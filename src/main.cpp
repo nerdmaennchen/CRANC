@@ -6,7 +6,7 @@
 // Those function tend to be highly system specific
 
 #include <mutex>
-std::mutex g_mutex;
+std::recursive_mutex g_mutex;
 void system_mutex_lock() {
 	g_mutex.lock();
 }
