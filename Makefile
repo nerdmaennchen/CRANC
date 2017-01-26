@@ -11,7 +11,7 @@ GDB     = $(CROSS_COMPILE_PREFIX)gdb
 OBJ_CPY = $(CROSS_COMPILE_PREFIX)objcopy
 
 SRC_FOLDER = src/
-LIBS =
+LIBS = pthread
 LIB_PATHS =
 INCLUDES = src/ \
 	src/include
