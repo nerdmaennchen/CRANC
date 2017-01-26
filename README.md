@@ -20,11 +20,11 @@ void system_mutex_lock(void); // lock a global recursive mutex (usually a suspen
 void system_mutex_unlock(void); // the ovious counterpart
 ```
 
-If you want to use features like communication though the interface you need to instanciate any subclass of flawless::PhyInterface that can receive and send packetized.
+If you want to use features like communication though the interface you need to instanciate any subclass of cranc::PhyInterface that can receive and send packetized.
 On the receiving side this subclass usually implements something like:
 
 ```c++
-auto packet = flawless::getFreeMessage<flawless::Packet_>(); // memory to store an incomming packet in 
+auto packet = cranc::getFreeMessage<cranc::Packet_>(); // memory to store an incomming packet in 
 if (packet) { // if that memory was aquired
 	packet->iface = this; // tell the framewok which interface received the packet
 	packet->buffer = YourData; // fill the content of the message
