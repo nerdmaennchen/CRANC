@@ -1,0 +1,5 @@
+.cproject
+.project
+cranc-example.elf
+cranc-example.map
+obj
