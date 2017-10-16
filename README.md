@@ -4,7 +4,7 @@ Completely Random AcroNym CRANC
 CRANC is a super lightweight c++ framework for use in embedded systems.
 It provides features as message passing, ordered module initialization, protocol abstraction, easy to use software-timers and some more!
 
-Simultaneously CRANC is what happens if you think about using C++ on microcontrollers... 
+CRANC is what happens if you think about using C++ on microcontrollers... 
 Is there actually any reason not to do that?
 Just think about template use for all the crappy stuff people used to implement via linker magic or defines!
 
