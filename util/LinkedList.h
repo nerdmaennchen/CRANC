@@ -18,66 +18,49 @@ struct LinkedList {
 public:
 	LinkedList() = default;
 	LinkedList(LinkedList const&) = delete;
-	LinkedList(LinkedList &&) = delete;
+	LinkedList(LinkedList &&other) { *this = std::move(other); };
 	LinkedList& operator=(LinkedList const&) = delete;
-	LinkedList& operator=(LinkedList &&) = delete;
+	LinkedList& operator=(LinkedList && rhs) {
+		cranc::LockGuard lock;
+		__breakpoint();
+		std::swap(prev, rhs.prev);
+		std::swap(next, rhs.next);
+		next->prev = this;
+		prev->next = this;
+	};
 	~LinkedList() {
-		sanity();
 		remove();
-		sanity();
 	}
 
 	void insertNext(LinkedList* other) {
 		cranc::LockGuard lock;
-		sanity();
 		next->prev = other;
 		other->next = next;
 		other->prev = this;
 		next = other;
-		sanity();
 	}
 	void insertBefore(LinkedList* other) {
 		cranc::LockGuard lock;
-		sanity();
 		prev->next = other;
 		other->next = this;
 		other->prev = prev;
 		prev = other;
-		sanity();
 	}
 
 	void remove() {
 		cranc::LockGuard lock;
-		sanity();
 		prev->next = next;
 		next->prev = prev;
 		prev = this;
 		next = this;
-		sanity();
 	}
 
 	bool empty() const {
 		cranc::LockGuard lock;
-		sanity();
 		return (next == this) and (prev == this);
 	}
 
-	void sanity() const {
-		// return;
-		cranc::LockGuard lock;
-		auto n = next;
-		while (n != this) {
-			assert(n != nullptr);
-			assert(n->next != nullptr);
-			assert(n->next->prev == n);
-			assert(n->prev != nullptr);
-			assert(n->prev->next == n);
-			n = n->next;
-		}
-	}
-
 	std::size_t count() const {
-		sanity();
 		std::size_t c{};
 		auto const* n = next;
 		while (n != this) {
@@ -106,6 +89,26 @@ public:
 		return static_cast<T*>(this);
 	}
 
+	struct EndIterator {
+		LinkedList<T>* element;
+
+		EndIterator(LinkedList<T>* _element)
+			: element{_element}
+		{
+		}
+
+		auto operator==(auto const& rhs) const {
+			return element == rhs.element;
+		};
+
+		LinkedList<T>& operator*() const {
+			return *element;
+		}
+		LinkedList<T>* operator->() const {
+			return element;
+		}
+	};
+
 	struct Iterator {
 		LinkedList<T>* element;
 		LinkedList<T> sentinel;
@@ -122,7 +125,7 @@ public:
 			return *this;
 		}
 
-		auto operator==(Iterator const& rhs) const {
+		auto operator==(auto const& rhs) const {
 			return element == rhs.element;
 		};
 
@@ -137,8 +140,8 @@ public:
 	Iterator begin() {
 		return Iterator(this->next);
 	}
-	Iterator end() {
-		return Iterator(this);
+	EndIterator end() {
+		return EndIterator(this);
 	}
 };
 
